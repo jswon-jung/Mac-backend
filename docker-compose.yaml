@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+    mac-mysql:
+        image: mysql:latest
+        container_name: mac-mysql
+        restart: always
+        environment:
+            MYSQL_DATABASE: MAC_DB
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - 3306:3306
+
+    mac-backend:
+        build:
+            context: .
+            dockerfile: dockerfile
+        container_name: mac-backend
+        volumes:
+            - ./src:/backend/src
+        depends_on:
+            - mac-mysql
+        env_file:
+            - .env
+        ports:
+            - 3000:3000
+
+networks:
+    default:
