@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+    mac-backend:
+        build:
+            context: .
+            dockerfile: dockerfile.dev
+        container_name: mac-backend
+        env_file:
+            - .env.dev
+        ports:
+            - 3000:3000
+
+networks:
+    default:
