@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "3.0.0",
+        "title": "mac project API Docs",
+        "description": "맥 [Mac] 프로젝트 api 문서입니다"
+    },
+    "host": "https://seungwon.shop",
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        },
+        {
+            "url": "https://seungwon.shop"
+        }
+    ],
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "User관련 API"
+        },
+        {
+            "name": "Auth",
+            "description": "로그인 관련 API"
+        }
+    ],
+    "schemes": ["http", "https"],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "CookieAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "refreshToken"
+            }
+        }
+    },
+    "paths": {}
+}
