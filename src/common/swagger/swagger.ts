@@ -25,5 +25,7 @@ const options = {
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = [''];
+const endpointsFiles = [
+    './src/apis/auth/auth.controller.ts', //
+];
 swaggerAutogen(outputFile, endpointsFiles, options);
