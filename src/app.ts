@@ -4,6 +4,7 @@ import cors from 'cors';
 import './apis/database/typeOrmConfig';
 import swaggerFile from './common/swagger/swagger-output.json';
 import swaggerUi from 'swagger-ui-express';
+import { Controllers } from './apis';
 
 const app = express();
 app.use(cors({ origin: '*' }));
@@ -15,6 +16,10 @@ app.use(
     swaggerUi.serve,
     swaggerUi.setup(swaggerFile, { explorer: true }),
 );
+
+Controllers.map((controller) => {
+    app.use(controller.path, controller.router);
+});
 
 app.get('/', (_, res) => {
     res.send('Mac 서버가 열렸습니다!!!!');
