@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -14,11 +13,10 @@ export const AppDataSource = new DataSource({
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_DATABASE,
-    entities: [__dirname + '/apis/**/*.entity.*'],
+    entities: [__dirname + '/entity/*.ts'],
     synchronize: true,
     logging: true,
 });
-
 AppDataSource.initialize()
     .then(async () => {
         console.log('🐶🐶🐶🐶🐶 TypeOrm 연결 성공!!!!! 🐶🐶🐶🐶🐶');
