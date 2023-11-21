@@ -3,8 +3,9 @@ import {
     IUserCreateDTO,
     IfindUserByEmail,
 } from './interface/user.interface';
-import { User } from '../database/entity/user.entity';
-import { AppDataSource } from '../database/typeOrmConfig';
+import { User } from '../../database/entity/user.entity';
+import { AppDataSource } from '../../database/typeOrmConfig';
+import CustomError from '../../common/error/customError';
 
 @Service()
 export class UserService {
@@ -20,8 +21,17 @@ export class UserService {
     }
 
     createUser({ createUserDTO }: IUserCreateDTO) {
-        return this.userRepo.save({
-            ...createUserDTO,
-        });
+        const { email } = createUserDTO;
+        const isUser = this.isUserByEmail({ email });
+        if (!isUser) {
+            return this.userRepo.save({
+                ...createUserDTO,
+            });
+        } else {
+            throw new CustomError(
+                '이미 회원가입된 이메일입니다',
+                400,
+            );
+        }
     }
 }

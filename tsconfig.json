@@ -11,6 +11,6 @@
         "emitDecoratorMetadata": true,
         "esModuleInterop": true
     },
-    "include": ["src/**/*", "src/app.ts"],
+    "include": ["src/**/*", "src/app.ts", "src/database"],
     "typeRoots": ["./src/types", "./node_modules/@types", ".env"]
 }
