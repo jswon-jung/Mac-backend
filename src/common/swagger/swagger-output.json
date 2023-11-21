@@ -40,5 +40,376 @@
             }
         }
     },
-    "paths": {}
+    "paths": {
+        "/user/sendSMS": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 요청하기",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SMS 토큰 전송",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 전송 성공": {
+                                        "value": {
+                                            "data": true
+                                        }
+                                    },
+                                    "SMS 토큰 전송 실패": {
+                                        "value": {
+                                            "data": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/validateSMS": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "문자 인증번호 검증하기",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "number",
+                                        "example": 11111
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SMS 토큰 검증",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "SMS 토큰 검증 성공": {
+                                        "value": {
+                                            "data": true
+                                        }
+                                    },
+                                    "SMS 토큰 검증 실패": {
+                                        "value": {
+                                            "data": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": [
+                                        "token : token must be a number",
+                                        "phone : phone must be a string"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/createUser": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "회원가입하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "abc@abc.com"
+                                    },
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "01012345678"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "홍길동"
+                                    },
+                                    "addressCode": {
+                                        "type": "string",
+                                        "example": "16340"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "경기도 수원시~"
+                                    },
+                                    "detailAddress": {
+                                        "type": "string",
+                                        "example": "아파트 111-1602"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "생성된 유저 ID 반환",
+                        "content": {
+                            "application/json": {
+                                "description": "",
+                                "example": {
+                                    "data": "asdwfsdvrgsdfaefesfgsefe"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": {
+                                        "email": "email must be an email",
+                                        "provider": "provider must be a string",
+                                        "phone": "phone must be a string",
+                                        "name": "name must be a string",
+                                        "addressCode": "addressCode must be a string",
+                                        "address": "address must be a string",
+                                        "detailAddress": "detailAddress must be a string"
+                                    }
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/socialLogin": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "소셜로그인하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "provider": {
+                                        "type": "string",
+                                        "example": "google"
+                                    },
+                                    "accessToken": {
+                                        "type": "string",
+                                        "example": "askjfb1f12jjodsnbovjoqe2e"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "member": {
+                                        "summary": "회원인 경우",
+                                        "value": {
+                                            "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                        }
+                                    },
+                                    "non-member": {
+                                        "summary": "비회원인 경우",
+                                        "value": {
+                                            "data": "abc@abc.com"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "TypeError": {
+                                        "summary": "타입 에러인 경우",
+                                        "value": {
+                                            "error": {
+                                                "provider": "provider must be a string",
+                                                "accessToken": "accessToken must be a string"
+                                            }
+                                        }
+                                    },
+                                    "invalidToken": {
+                                        "summary": "accessToken이 유효하지 않은 경우",
+                                        "value": {
+                                            "error": "엑세스 토큰이 유효하지 않습니다"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
