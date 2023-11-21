@@ -16,9 +16,13 @@ export class UserService {
         });
     }
 
-    createUser({ createUserDTO }: IUserCreateDTO) {
-        return this.userRepo.save({
+    async createUser({
+        createUserDTO,
+    }: IUserCreateDTO): Promise<User['id']> {
+        const user = await this.userRepo.save({
             ...createUserDTO,
         });
+
+        return user.id;
     }
 }
