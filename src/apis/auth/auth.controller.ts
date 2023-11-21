@@ -27,6 +27,7 @@ class AuthController {
         res.status(200).json({
             data: await this.authService.socialLogin({
                 socialLoginDTO: req.body as SocialLoginDTO,
+                res,
             }),
         });
     }
