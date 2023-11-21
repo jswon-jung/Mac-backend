@@ -17,7 +17,7 @@ class AuthController {
 
     init() {
         this.router.post(
-            '/socialLogin', //
+            '/socialLogin',
             Validate.socialLogin,
             asyncHandler(this.socialLogin.bind(this)),
         );

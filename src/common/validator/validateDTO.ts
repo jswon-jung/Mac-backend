@@ -3,10 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { SocialLoginDTO } from '../../apis/auth/dto/socialLogin.dto';
 import CustomError from '../error/customError';
+import { CreateUserDTO } from '../../apis/users/dto/createUser.dto';
 
 class Validate {
     constructor() {
         this.socialLogin = asyncHandler(this.socialLogin.bind(this));
+        this.createUser = asyncHandler(this.createUser.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -29,6 +31,12 @@ class Validate {
         await this.errors(
             new SocialLoginDTO({ provider, accessToken }),
         );
+        next();
+    }
+
+    async createUser(req: Request, _: Response, next: NextFunction) {
+        await this.errors(new CreateUserDTO(req.body));
+
         next();
     }
 }
