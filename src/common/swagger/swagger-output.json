@@ -410,6 +410,259 @@
                     }
                 }
             }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그인하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "example": "255617b0-446c-477e-96c9-cb9fe54bc6cc"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "summary": "일치하는 id가 있는 경우",
+                                "example": {
+                                    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "요청 형식 에러",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "TypeError": {
+                                        "summary": "타입 에러인 경우",
+                                        "value": {
+                                            "error": "id : id must be an string"
+                                        }
+                                    },
+                                    "noData": {
+                                        "summary": "일치하는 id가 없는 경우",
+                                        "value": {
+                                            "data": "id가 일치하는 유저가 없습니다"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/restoreAccessToken": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "refreshToken으로 accessToken 재발급하기",
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "accessToken": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "TokenTypeError": {
+                                        "summary": "토큰 형식 에러인 경우",
+                                        "value": {
+                                            "error": "토큰 형식이 일치하지 않습니다."
+                                        }
+                                    },
+                                    "AlreadyLogout": {
+                                        "summary": "이미 로그아웃한 경우",
+                                        "value": {
+                                            "error": "이미 로그아웃한 refreshToken입니다."
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "토큰 인증 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "로그인 후 이용 가능한 기능입니다."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/logout": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "로그아웃하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    },
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "로그아웃 성공": {
+                                        "value": {
+                                            "data": true
+                                        }
+                                    },
+                                    "로그아웃 실패": {
+                                        "value": {
+                                            "data": false
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "true": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "properties": {
+                                                "false": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "TokenTypeError": {
+                                        "summary": "토큰 형식 에러인 경우",
+                                        "value": {
+                                            "error": "토큰 형식이 일치하지 않습니다."
+                                        }
+                                    },
+                                    "AlreadyLogout": {
+                                        "summary": "이미 로그아웃한 경우",
+                                        "value": {
+                                            "error": "이미 로그아웃한 accessToken입니다."
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
