@@ -2,13 +2,11 @@ import { Request, Response, Router } from 'express';
 import { Container } from 'typedi';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { UserService } from './users.service';
-import {
-    createUserDTOType,
-    phoneType,
-    validateTokenType,
-} from '../../common/types';
 import Validate from '../../common/validator/validateDTO';
 import { SmsService } from '../../common/util/sms/sms.service';
+import { SendTokenSmsDTO } from '../../common/util/sms/dto/sendTokenSMS.dto';
+import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
+import { CreateUserDTO } from './dto/createUser.dto';
 
 class UserController {
     router = Router();
@@ -43,7 +41,7 @@ class UserController {
 
     async sendSMS(req: Request, res: Response) {
         // #swagger.tags = ['Users']
-        const { phone } = req.body as phoneType;
+        const { phone } = req.body as SendTokenSmsDTO;
         res.status(200).json({
             data: await this.smsService.sendSMS(phone),
         });
@@ -53,7 +51,7 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.smsService.validateSMS(
-                req.body as validateTokenType,
+                req.body as ValidateTokenDTO,
             ),
         });
     }
@@ -62,7 +60,7 @@ class UserController {
         // #swagger.tags = ['Users']
         res.status(200).json({
             data: await this.userService.createUser({
-                createUserDTO: req.body as createUserDTOType,
+                createUserDTO: req.body as CreateUserDTO,
             }),
         });
     }

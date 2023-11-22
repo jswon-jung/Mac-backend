@@ -6,7 +6,6 @@ import CustomError from '../error/customError';
 import { CreateUserDTO } from '../../apis/users/dto/createUser.dto';
 import { SendTokenSmsDTO } from '../util/sms/dto/sendTokenSMS.dto';
 import { ValidateTokenDTO } from '../util/sms/dto/validateToken.dto';
-import { phoneType } from '../types';
 
 class Validate {
     constructor() {
@@ -54,7 +53,7 @@ class Validate {
         _: Response,
         next: NextFunction,
     ) {
-        const { phone } = req.body as phoneType;
+        const { phone } = req.body as SendTokenSmsDTO;
         await this.errors(new SendTokenSmsDTO({ phone }));
 
         next();

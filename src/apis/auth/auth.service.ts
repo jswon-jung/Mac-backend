@@ -15,7 +15,10 @@ export class AuthService {
     constructor(
         private readonly userService: UserService, //
     ) {}
-    async socialLogin({ socialLoginDTO, res }: ISocialLogin) {
+    async socialLogin({
+        socialLoginDTO,
+        res,
+    }: ISocialLogin): Promise<string> {
         const email = await socialLoginData({ socialLoginDTO });
 
         const isUser = await this.userService.isUserByEmail({

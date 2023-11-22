@@ -1,15 +1,21 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum PROVIDER_ENUM {
+    GOOGLE = 'google',
+    KAKAO = 'kakao',
+    NAVER = 'naver',
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string = '';
 
-    @Column()
+    @Column({ unique: true })
     email: string = '';
 
-    @Column()
-    provider: string = '';
+    @Column({ type: 'enum', enum: PROVIDER_ENUM })
+    provider: PROVIDER_ENUM = PROVIDER_ENUM.GOOGLE;
 
     @Column()
     phone: string = '';
