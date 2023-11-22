@@ -27,7 +27,7 @@ class AuthController {
         );
 
         this.router.post(
-            '/login',
+            '/',
             Validate.login,
             asyncHandler(this.login.bind(this)),
         );
