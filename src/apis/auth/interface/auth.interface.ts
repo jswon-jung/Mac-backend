@@ -15,6 +15,11 @@ export interface UserID {
     id: User['id'];
 }
 
+export interface ILogin {
+    id: User['id'];
+    res: Response;
+}
+
 export interface IContext {
     req: Request;
     res: Response;

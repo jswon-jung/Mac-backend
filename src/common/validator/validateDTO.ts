@@ -6,6 +6,7 @@ import CustomError from '../error/customError';
 import { CreateUserDTO } from '../../apis/users/dto/createUser.dto';
 import { SendTokenSmsDTO } from '../util/sms/dto/sendTokenSMS.dto';
 import { ValidateTokenDTO } from '../util/sms/dto/validateToken.dto';
+import { LoginDTO } from '../../apis/auth/dto/login.dto';
 
 class Validate {
     constructor() {
@@ -17,6 +18,7 @@ class Validate {
         this.validateToken = asyncHandler(
             this.validateToken.bind(this),
         );
+        this.login = asyncHandler(this.login.bind(this));
     }
 
     async errors<T extends object>(dto: T) {
@@ -65,6 +67,13 @@ class Validate {
         next: NextFunction,
     ) {
         await this.errors(new ValidateTokenDTO(req.body));
+
+        next();
+    }
+
+    async login(req: Request, _: Response, next: NextFunction) {
+        const { id } = req.body as LoginDTO;
+        await this.errors(new LoginDTO({ id }));
 
         next();
     }
