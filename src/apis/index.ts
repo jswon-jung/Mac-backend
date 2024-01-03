@@ -1,7 +1,9 @@
 import AuthController from './auth/auth.controller';
-import usersController from './users/users.controller';
+import UserController from './users/users.controller';
+import ProductController from './product/products.controller';
 
 export const Controllers = [
     AuthController, //
-    usersController,
+    UserController,
+    ProductController,
 ];
