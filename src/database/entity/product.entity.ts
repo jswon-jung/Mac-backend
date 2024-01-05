@@ -2,9 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Gallery } from './gallery.entity';
@@ -64,13 +62,13 @@ export class Product {
     price!: number;
 
     @Column({ type: 'enum', enum: MAINCATEGORY_ENUM })
-    mainCategory: MAINCATEGORY_ENUM = MAINCATEGORY_ENUM.EYE;
+    mainCategory!: MAINCATEGORY_ENUM;
 
     @Column({ type: 'enum', enum: SUBCATEGORY_ENUM })
-    subCategory: SUBCATEGORY_ENUM = SUBCATEGORY_ENUM.LIPSTICK;
+    subCategory!: SUBCATEGORY_ENUM;
 
     @Column({ type: 'enum', enum: COLLECTION_ENUM })
-    collection: COLLECTION_ENUM = COLLECTION_ENUM.NONE;
+    collection!: COLLECTION_ENUM;
 
     @OneToMany(() => Tag, (tag) => tag.product)
     tag!: Tag[];
@@ -88,5 +86,5 @@ export class Product {
     createdAt!: Date;
 
     @Column({ default: 0 })
-    review: number = 0;
+    review!: number;
 }
