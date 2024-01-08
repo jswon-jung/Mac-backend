@@ -15,3 +15,7 @@ export type fetchDetailProductType = {
     id: User['id'];
     productId: Product['id'];
 };
+
+export type idType = {
+    id: User['id'];
+};

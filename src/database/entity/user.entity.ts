@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Shopping } from './shopping.entity';
 
 export enum PROVIDER_ENUM {
     GOOGLE = 'google',
@@ -31,4 +37,7 @@ export class User {
 
     @Column()
     detailAddress: string = '';
+
+    @OneToMany(() => Shopping, (shopping) => shopping.user)
+    shopping!: Shopping[];
 }
