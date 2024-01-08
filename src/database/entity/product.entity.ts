@@ -2,7 +2,9 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Gallery } from './gallery.entity';
@@ -81,6 +83,10 @@ export class Product {
 
     @Column()
     summary!: string;
+
+    @JoinColumn()
+    @OneToOne(() => Info)
+    info!: Info;
 
     @CreateDateColumn()
     createdAt!: Date;

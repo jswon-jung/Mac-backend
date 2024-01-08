@@ -1,3 +1,4 @@
+import { Product } from '../database/entity/product.entity';
 import { User } from '../database/entity/user.entity';
 
 export type categoryType = {
@@ -8,4 +9,9 @@ export type fetchProductsType = {
     id: User['id'];
     category: string;
     order: string;
+};
+
+export type fetchDetailProductType = {
+    id: User['id'];
+    productId: Product['id'];
 };
