@@ -15,7 +15,10 @@ import { Color } from '../../database/entity/color.entity';
 import { Info } from '../../database/entity/info.entity';
 import { randomProduct } from '../../common/util/product/randomProduct';
 import CustomError from '../../common/error/customError';
-import { fetchProductsType } from '../../common/type';
+import {
+    fetchDetailProductType,
+    fetchProductsType,
+} from '../../common/type';
 import { UserService } from '../users/users.service';
 import { productOrder } from '../../common/util/product/productOrder';
 
@@ -32,8 +35,13 @@ export class ProductService {
         const { gallery, tag, color, info, ...rest } =
             createProductDTO;
 
+        const infoData = await this.infoRepo.save({
+            ...info,
+        });
+
         const result = await this.productRepo.save({
             ...rest,
+            info: { id: infoData.id },
         });
 
         await Promise.all([
@@ -61,10 +69,6 @@ export class ProductService {
                     product: { id: result.id },
                 }),
             ),
-            this.infoRepo.save({
-                ...info,
-                product: { id: result.id },
-            }),
         ]);
 
         return result;
@@ -121,49 +125,72 @@ export class ProductService {
             //todo 유저 id에 해당하는 찜한 데이터 id 가져오기
         }
 
-        if (category === 'NEW') {
-            const data = await this.productRepo.find({
-                select: [
-                    'id',
-                    'thumbnail',
-                    'name',
-                    'price',
-                    'review',
-                    'createdAt',
-                ],
-                relations: ['tag', 'color'],
-                order: {
-                    createdAt: 'ASC',
-                },
-            });
-            //todo order 데이터 작업
-            await productOrder({ data, order });
+        const queryBuilder = this.productRepo
+            .createQueryBuilder('product')
+            .select([
+                'product.id',
+                'product.thumbnail',
+                'product.name',
+                'product.price',
+                'tag.tag',
+                'color.code',
+            ])
+            .leftJoin('product.tag', 'tag')
+            .leftJoin('product.color', 'color');
 
-            return data;
+        if (category === 'ALL' || category === 'NEW') {
+            order === '인기순'
+                ? queryBuilder
+                      .orderBy('product.review', 'DESC')
+                      .addOrderBy('product.createdAt', 'ASC')
+                : queryBuilder.orderBy('product.createdAt', 'ASC');
         } else if (category === 'BEST') {
-            const data = await this.productRepo.find({
-                select: [
-                    'id',
-                    'thumbnail',
-                    'name',
-                    'price',
-                    'review',
-                    'createdAt',
-                ],
-                relations: ['tag', 'color'],
-                order: {
-                    review: 'DESC',
-                },
-                take: 5,
-            });
-
-            //todo order 데이터 작업
-            await productOrder({ data, order });
-
-            return data;
-        } else if (category === 'LIP') {
-        } else if (category === 'EYE') {
-        } else if (category === 'FACE') {
+            queryBuilder
+                .orderBy('product.review', 'DESC')
+                .addOrderBy('product.createdAt', 'ASC');
+        } else {
+            order === '인기순'
+                ? queryBuilder
+                      .where('product.mainCategory = :mainCategory', {
+                          mainCategory: category,
+                      })
+                      .orderBy('product.review', 'DESC')
+                      .addOrderBy('product.createdAt', 'ASC')
+                : queryBuilder
+                      .where('product.mainCategory = :mainCategory', {
+                          mainCategory: category,
+                      })
+                      .orderBy('product.createdAt', 'ASC');
         }
+
+        return await queryBuilder.getMany();
+    }
+
+    async fetchDetailProduct({
+        id,
+        productId,
+    }: fetchDetailProductType) {
+        const queryBuilder = this.productRepo
+            .createQueryBuilder('product')
+            .where('product.id = :id', {
+                id: productId,
+            })
+            .select([
+                'product.id',
+                'product.name',
+                'product.weight',
+                'product.engName',
+                'product.price',
+                'product.summary',
+                'product.content',
+                'gallery.gallery',
+                'tag.tag',
+            ])
+            .leftJoin('product.tag', 'tag')
+            .leftJoinAndSelect('product.color', 'color')
+            .leftJoin('product.gallery', 'gallery')
+            .leftJoinAndSelect('product.info', 'info');
+
+        return await queryBuilder.getMany();
     }
 }

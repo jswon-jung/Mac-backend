@@ -3,7 +3,11 @@ import { Container } from 'typedi';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { ProductService } from './products.service';
 import { CreateProductDTO } from './dto/createProduct.dto';
-import { categoryType, fetchProductsType } from '../../common/type';
+import {
+    categoryType,
+    fetchDetailProductType,
+    fetchProductsType,
+} from '../../common/type';
 
 class ProductController {
     router = Router();
@@ -28,6 +32,11 @@ class ProductController {
         this.router.get(
             '/fetchProducts',
             asyncHandler(this.fetchProducts.bind(this)),
+        );
+
+        this.router.get(
+            '/fetchDetailProduct',
+            asyncHandler(this.fetchDetailProduct.bind(this)),
         );
     }
 
@@ -58,6 +67,17 @@ class ProductController {
                 id,
                 category,
                 order,
+            }),
+        });
+    }
+
+    async fetchDetailProduct(req: Request, res: Response) {
+        // #swagger.tags = ['Product']
+        const { id, productId } = req.query as fetchDetailProductType;
+        res.status(200).json({
+            data: await this.productService.fetchDetailProduct({
+                id,
+                productId,
             }),
         });
     }

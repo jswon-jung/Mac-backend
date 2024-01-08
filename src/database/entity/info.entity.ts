@@ -1,11 +1,4 @@
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    OneToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Product } from './product.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Info {
@@ -44,8 +37,4 @@ export class Info {
 
     @Column()
     qualityGuarantee!: string;
-
-    @JoinColumn()
-    @OneToOne(() => Product)
-    product!: Product;
 }
