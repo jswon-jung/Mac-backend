@@ -20,7 +20,6 @@ import {
     fetchProductsType,
 } from '../../common/type';
 import { UserService } from '../users/users.service';
-import { productOrder } from '../../common/util/product/productOrder';
 
 @Service()
 export class ProductService {
@@ -118,7 +117,7 @@ export class ProductService {
     }
 
     async fetchProducts({ id, category, order }: fetchProductsType) {
-        id && (await this.userService.isUserByID);
+        id && (await this.userService.isUserByID({ id }));
 
         if (id) {
             await this.userService.isUserByID;
