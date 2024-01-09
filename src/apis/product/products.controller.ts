@@ -73,11 +73,10 @@ class ProductController {
 
     async fetchDetailProduct(req: Request, res: Response) {
         // #swagger.tags = ['Product']
-        const { id, productId } = req.query as fetchDetailProductType;
+        const { id } = req.query as fetchDetailProductType;
         res.status(200).json({
             data: await this.productService.fetchDetailProduct({
                 id,
-                productId,
             }),
         });
     }

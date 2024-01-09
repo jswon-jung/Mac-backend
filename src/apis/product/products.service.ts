@@ -137,12 +137,14 @@ export class ProductService {
             .leftJoin('product.tag', 'tag')
             .leftJoin('product.color', 'color');
 
-        if (category === 'ALL' || category === 'NEW') {
+        if (category === 'ALL') {
             order === '인기순'
                 ? queryBuilder
                       .orderBy('product.review', 'DESC')
                       .addOrderBy('product.createdAt', 'ASC')
                 : queryBuilder.orderBy('product.createdAt', 'ASC');
+        } else if (category === 'NEW') {
+            queryBuilder.orderBy('product.createdAt', 'ASC');
         } else if (category === 'BEST') {
             queryBuilder
                 .orderBy('product.review', 'DESC')
@@ -165,14 +167,11 @@ export class ProductService {
         return await queryBuilder.getMany();
     }
 
-    async fetchDetailProduct({
-        id,
-        productId,
-    }: fetchDetailProductType) {
+    async fetchDetailProduct({ id }: fetchDetailProductType) {
         const queryBuilder = this.productRepo
             .createQueryBuilder('product')
             .where('product.id = :id', {
-                id: productId,
+                id,
             })
             .select([
                 'product.id',
