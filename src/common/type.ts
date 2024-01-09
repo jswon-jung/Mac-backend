@@ -12,8 +12,7 @@ export type fetchProductsType = {
 };
 
 export type fetchDetailProductType = {
-    id: User['id'];
-    productId: Product['id'];
+    id: Product['id'];
 };
 
 export type idType = {
