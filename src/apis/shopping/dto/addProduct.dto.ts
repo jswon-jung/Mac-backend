@@ -8,9 +8,6 @@ export class AddProductDTO {
     @IsNumber()
     count!: number;
 
-    @IsNumber()
-    delivery!: number;
-
     @IsString()
     option!: string;
 }

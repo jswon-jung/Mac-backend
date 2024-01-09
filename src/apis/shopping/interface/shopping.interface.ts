@@ -18,3 +18,8 @@ export interface IUpdateShoppingDTO {
     updateShoppingDTO: UpdateShoppingDTO;
     id: User['id'];
 }
+
+export interface IfetchOption {
+    id: User['id'];
+    productId: Product['id'];
+}

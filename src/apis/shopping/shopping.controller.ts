@@ -4,7 +4,7 @@ import { ShoppingService } from './shopping.service';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { AddProductDTO } from './dto/addProduct.dto';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
-import { idType } from '../../common/type';
+import { idType, productIdType } from '../../common/type';
 import { DeleteShoppingDTO } from './dto/deleteShopping.dto';
 import { UpdateShoppingDTO } from './dto/updateShopping.dto';
 
@@ -38,6 +38,13 @@ class ShoppingController {
             asyncHandler(this.getShopping.bind(this)),
         );
 
+        this.router.get(
+            '/fetchOption',
+            // Validate.createProduct,
+            AccessGuard.handle,
+            asyncHandler(this.fetchOption.bind(this)),
+        );
+
         this.router.patch(
             '/update',
             // Validate.createProduct,
@@ -51,6 +58,8 @@ class ShoppingController {
             AccessGuard.handle,
             asyncHandler(this.getOrder.bind(this)),
         );
+
+        //todo 배송지 변경하기
     }
 
     async addProduct(req: Request, res: Response) {
@@ -84,6 +93,19 @@ class ShoppingController {
         res.status(200).json({
             data: await this.shoppingService.getShopping({
                 id,
+            }),
+        });
+    }
+
+    async fetchOption(req: Request, res: Response) {
+        // #swagger.tags = ['Shopping']
+        const { id } = req.user as idType;
+        const { productId } = req.query as productIdType;
+
+        res.status(200).json({
+            data: await this.shoppingService.fetchOption({
+                id,
+                productId,
             }),
         });
     }

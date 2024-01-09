@@ -40,4 +40,7 @@ export class User {
 
     @OneToMany(() => Shopping, (shopping) => shopping.user)
     shopping!: Shopping[];
+
+    @Column({ default: 0 })
+    point!: number;
 }
