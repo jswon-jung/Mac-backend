@@ -4,17 +4,20 @@ import {
     IAddProductDTO,
     IDeleteShoppingDTO,
     IUpdateShoppingDTO,
+    IfetchOption,
 } from './interface/shopping.interface';
 import { Shopping } from '../../database/entity/shopping.entity';
 import { UserService } from '../users/users.service';
 import { idType } from '../../common/type';
 import { Product } from '../../database/entity/product.entity';
 import CustomError from '../../common/error/customError';
+import { Color } from '../../database/entity/color.entity';
 
 @Service()
 export class ShoppingService {
     shoppingRepo = AppDataSource.getRepository(Shopping);
     productRepo = AppDataSource.getRepository(Product);
+    colorRepo = AppDataSource.getRepository(Color);
 
     constructor(private readonly userService: UserService) {}
 
@@ -44,22 +47,14 @@ export class ShoppingService {
         await this.userService.isUserByID({ id });
 
         let priceSum = 0;
-        let deliverySum = 0;
 
         const list = await this.shoppingRepo.find({
             where: { user: { id } },
-            select: [
-                'count',
-                'id',
-                'productId',
-                'delivery',
-                'option',
-            ],
+            select: ['count', 'id', 'productId', 'option'],
         });
 
         const result = await Promise.all(
             list.map(async (el) => {
-                deliverySum += el.delivery;
                 const product = await this.productRepo.findOne({
                     where: { id: el.productId },
                     select: ['id', 'thumbnail', 'name', 'price'],
@@ -76,9 +71,17 @@ export class ShoppingService {
         return {
             list: result,
             priceSum: priceSum,
-            deliverySum: deliverySum,
-            sum: priceSum + deliverySum,
+            sum: priceSum + 4000,
         };
+    }
+
+    async fetchOption({ id, productId }: IfetchOption) {
+        await this.userService.isUserByID({ id });
+
+        return await this.colorRepo.find({
+            where: { product: { id: productId } },
+            select: ['name', 'code', 'desc'],
+        });
     }
 
     async updateShopping({
@@ -117,24 +120,14 @@ export class ShoppingService {
     async getOrder({ id }: idType) {
         const user = await this.userService.isUserByID({ id });
 
-        const list = await this.shoppingRepo.find({
-            where: { user: { id } },
-            select: [
-                'id',
-                'count',
-                'option',
-                'delivery',
-                'productId',
-            ],
-        });
-
-        list.map((el) => {});
+        const list = await this.getShopping({ id });
 
         return {
             name: user.name,
             phone: user.phone,
             address: user.address,
             detailAddress: user.detailAddress,
+            point: user.point,
             list,
         };
     }

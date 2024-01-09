@@ -25,9 +25,6 @@ export class Shopping {
     count: number = 1;
 
     @Column()
-    delivery!: number;
-
-    @Column()
     option!: string;
 
     @CreateDateColumn()
