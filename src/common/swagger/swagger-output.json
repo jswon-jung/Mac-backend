@@ -23,6 +23,10 @@
         {
             "name": "Auth",
             "description": "로그인 관련 API"
+        },
+        {
+            "name": "Product",
+            "description": "상품 관련 API"
         }
     ],
     "schemes": ["http", "https"],
@@ -647,6 +651,701 @@
                                             "type": "string"
                                         }
                                     ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/createProduct": {
+            "post": {
+                "tags": ["Product"],
+                "summary": "상품 등록하기",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "naem": {
+                                        "type": "string",
+                                        "example": "상품이름"
+                                    },
+                                    "thumbnail": {
+                                        "type": "string",
+                                        "example": "썸네일 사진"
+                                    },
+                                    "gallery": {
+                                        "type": "array",
+                                        "example": [
+                                            "사진1.jpg",
+                                            "사진2.jpg"
+                                        ]
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "컨텐트 사진"
+                                    },
+                                    "engName": {
+                                        "type": "string",
+                                        "example": "영어 상품명"
+                                    },
+                                    "price": {
+                                        "type": "string",
+                                        "example": "상품 가격"
+                                    },
+                                    "mainCategory": {
+                                        "type": "string",
+                                        "example": "FACE / EYE / LIP"
+                                    },
+                                    "subCategory": {
+                                        "type": "string",
+                                        "example": "서브카테고리"
+                                    },
+                                    "collection": {
+                                        "type": "string",
+                                        "example": "컬렉션"
+                                    },
+                                    "tag": {
+                                        "type": "array",
+                                        "example": ["태그1", "태그2"]
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "10G"
+                                    },
+                                    "color": {
+                                        "type": "array",
+                                        "example": [
+                                            {
+                                                "name": "색이름",
+                                                "desc": "색설명",
+                                                "code": "색상코드",
+                                                "category": "색상카테고리",
+                                                "image": "색이미지",
+                                                "texture": "색상텍스처",
+                                                "icon": "색아이콘"
+                                            }
+                                        ]
+                                    },
+                                    "summary": {
+                                        "type": "string",
+                                        "example": "요약"
+                                    },
+                                    "info": {
+                                        "type": "object",
+                                        "example": {
+                                            "name": "이름",
+                                            "weight": "무게",
+                                            "type": "타입",
+                                            "useBy": "배송정보",
+                                            "method": "사용법",
+                                            "seller": "판매처",
+                                            "origin": "제조국가",
+                                            "ingredient": "재료",
+                                            "certification": "증명서",
+                                            "cautions": "주의사항",
+                                            "qualityGuarantee": "보증서"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "상품 등록 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "name": "프렙+프라임 립",
+                                        "thumbnail": "https://storage.googleapis.com/cometes-storage/thumbnail/FACE/%ED%94%84%EB%A0%99%20%EB%A6%BD.png",
+                                        "content": "https://storage.googleapis.com/cometes-storage/content/FACE/prepLip.jpg",
+                                        "engName": "PREP + PRIME LIP",
+                                        "price": 35000,
+                                        "mainCategory": "FACE",
+                                        "subCategory": "PRIMER",
+                                        "collection": "NONE",
+                                        "weight": "1.7G",
+                                        "summary": "립스틱과의 밀착력을 높여 입술 화장이 번짐없이 오래 지속되도록 해주는 슬림한 스틱 타입의 립 프라이머",
+                                        "info": {
+                                            "id": "ee11ecfa-5617-443a-b4e3-9ee83563170f"
+                                        },
+                                        "id": "ef2c4bc5-82bd-4a0c-b9df-d4d8ada0df01",
+                                        "createdAt": "2024-01-10T05:11:52.254Z",
+                                        "review": 0
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "thumbnail": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                },
+                                                "engName": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "mainCategory": {
+                                                    "type": "string"
+                                                },
+                                                "subCategory": {
+                                                    "type": "string"
+                                                },
+                                                "collection": {
+                                                    "type": "string"
+                                                },
+                                                "weight": {
+                                                    "type": "string"
+                                                },
+                                                "summary": {
+                                                    "type": "string"
+                                                },
+                                                "info": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string"
+                                                },
+                                                "review": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/fetchBanner": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "상품 배너 조회하기",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "ALL, NEW, BEST, LIP, EYE, FACE 중 하나",
+                        "schema": {
+                            "type": "string",
+                            "format": "category",
+                            "example": "ALL"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        },
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진",
+                                            "price": 10000
+                                        }
+                                    ]
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "thumbnail": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "category 값이 잘못된 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "category가 잘못되었습니다"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/fetchProducts": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "카테고리별 상품 조회하기",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "유저 로그인시 사용",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "6d7e71d7-72a4-4bbe-bd03-00a40ce79a8e"
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "ALL, NEW, BEST, LIP, EYE, FACE, BROW, LINER, SHADOW, BLUSH, CUSHION, FOUNDATION, POWDER, PRIMER, LIPBALM, LIPSTICK, LIQUIDLIP 중 하나",
+                        "schema": {
+                            "type": "string",
+                            "format": "category",
+                            "example": "ALL"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "인기순, 최신순 중 하나",
+                        "schema": {
+                            "type": "string",
+                            "format": "category",
+                            "example": "최신순"
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "count",
+                        "in": "query",
+                        "description": "데이터 총 개수 확인할 때 사용",
+                        "schema": {
+                            "type": "string",
+                            "format": "count",
+                            "example": "true"
+                        },
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "페이지 번호: 1, 2, 3,...",
+                        "schema": {
+                            "type": "string",
+                            "format": "page",
+                            "example": "1"
+                        },
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "product": [
+                                            {
+                                                "id": "adfhttwerqwrasxczx",
+                                                "name": "상품명",
+                                                "thumbnail": "상품 썸네일 사진",
+                                                "price": 10000,
+                                                "createdAt": "상품 등록 날짜",
+                                                "review": 3,
+                                                "tag": [
+                                                    {
+                                                        "tag": "태그"
+                                                    }
+                                                ],
+                                                "color": [
+                                                    {
+                                                        "code": "색상코드"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "product": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "thumbnail": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "number"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string"
+                                                            },
+                                                            "review": {
+                                                                "type": "number"
+                                                            },
+                                                            "tag": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "tag": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "tag"
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "color": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "code": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "required": [
+                                                                        "code"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/fetchDetailProduct": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "상품 상세페이지 조회하기",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "상품 productId",
+                        "schema": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "6d7e71d7-72a4-4bbe-bd03-00a40ce79a8e"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": "상품 아이디",
+                                        "name": "상품명",
+                                        "content": "컨텐트",
+                                        "engName": "영문상품명",
+                                        "price": 10000,
+                                        "weight": "상품 무게",
+                                        "summary": "상품 요약",
+                                        "tag": [
+                                            {
+                                                "tag": "태그"
+                                            }
+                                        ],
+                                        "color": [
+                                            {
+                                                "id": "색상 아이디",
+                                                "name": "색상 이름",
+                                                "desc": "색상 설명",
+                                                "code": "색상 코드",
+                                                "category": "색상 카테고리",
+                                                "image": "색상 이미지",
+                                                "texture": "색상텍스처",
+                                                "icon": "색상아이콘"
+                                            }
+                                        ],
+                                        "gallery": [
+                                            {
+                                                "gallery": "색상 갤러리 이미지"
+                                            }
+                                        ],
+                                        "info": {
+                                            "id": "정보 아이디",
+                                            "name": "상품 이름",
+                                            "weight": "상품 무게",
+                                            "type": "상품 타입",
+                                            "useBy": "배송정보",
+                                            "method": "사용법",
+                                            "seller": "판매처",
+                                            "origin": "제조국가",
+                                            "ingredient": "재료",
+                                            "certification": "증명서",
+                                            "cautions": "주의사항",
+                                            "qualityGuarantee": "보증서"
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "thumbnail": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string"
+                                                },
+                                                "review": {
+                                                    "type": "number"
+                                                },
+                                                "tag": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "tag": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "color": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "desc": {
+                                                                "type": "string"
+                                                            },
+                                                            "code": {
+                                                                "type": "string"
+                                                            },
+                                                            "category": {
+                                                                "type": "string"
+                                                            },
+                                                            "image": {
+                                                                "type": "string"
+                                                            },
+                                                            "texture": {
+                                                                "type": "string"
+                                                            },
+                                                            "icon": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "gallery": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "gallery": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "info": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "weight": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "useBy": {
+                                                            "type": "string"
+                                                        },
+                                                        "method": {
+                                                            "type": "string"
+                                                        },
+                                                        "seller": {
+                                                            "type": "string"
+                                                        },
+                                                        "origin": {
+                                                            "type": "string"
+                                                        },
+                                                        "ingredient": {
+                                                            "type": "string"
+                                                        },
+                                                        "certification": {
+                                                            "type": "string"
+                                                        },
+                                                        "cautions": {
+                                                            "type": "string"
+                                                        },
+                                                        "qualityGuarantee": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
