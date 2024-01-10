@@ -12,6 +12,7 @@ import { idType } from '../../common/type';
 import { Product } from '../../database/entity/product.entity';
 import CustomError from '../../common/error/customError';
 import { Color } from '../../database/entity/color.entity';
+import { getOrderNumber } from '../../common/util/order/getOrderNumber';
 
 @Service()
 export class ShoppingService {
@@ -24,10 +25,12 @@ export class ShoppingService {
     async addProduct({ addProductDTO, id }: IAddProductDTO) {
         await this.userService.isUserByID({ id });
 
-        return await this.shoppingRepo.save({
-            ...addProductDTO,
-            user: { id },
-        });
+        return await getOrderNumber();
+
+        // return await this.shoppingRepo.save({
+        //     ...addProductDTO,
+        //     user: { id },
+        // });
     }
 
     async deleteProduct({
