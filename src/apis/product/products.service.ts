@@ -116,7 +116,13 @@ export class ProductService {
             throw new CustomError('category가 잘못되었습니다', 400);
     }
 
-    async fetchProducts({ id, category, order }: fetchProductsType) {
+    async fetchProducts({
+        id,
+        category,
+        order,
+        count,
+        page,
+    }: fetchProductsType) {
         id && (await this.userService.isUserByID({ id }));
 
         if (id) {
@@ -131,11 +137,14 @@ export class ProductService {
                 'product.thumbnail',
                 'product.name',
                 'product.price',
+                'product.createdAt',
+                'product.review',
                 'tag.tag',
                 'color.code',
             ])
             .leftJoin('product.tag', 'tag')
-            .leftJoin('product.color', 'color');
+            .leftJoin('product.color', 'color')
+            .orderBy('product.createdAt', 'ASC');
 
         if (category === 'ALL') {
             order === '인기순'
@@ -149,7 +158,11 @@ export class ProductService {
             queryBuilder
                 .orderBy('product.review', 'DESC')
                 .addOrderBy('product.createdAt', 'ASC');
-        } else {
+        } else if (
+            category === 'EYE' ||
+            category === 'FACE' ||
+            category === 'LIP'
+        ) {
             order === '인기순'
                 ? queryBuilder
                       .where('product.mainCategory = :mainCategory', {
@@ -162,9 +175,29 @@ export class ProductService {
                           mainCategory: category,
                       })
                       .orderBy('product.createdAt', 'ASC');
+        } else {
+            order === '인기순'
+                ? queryBuilder
+                      .where('product.subCategory = :subCategory', {
+                          subCategory: category,
+                      })
+                      .orderBy('product.review', 'DESC')
+                      .addOrderBy('product.createdAt', 'ASC')
+                : queryBuilder
+                      .where('product.subCategory = :subCategory', {
+                          subCategory: category,
+                      })
+                      .orderBy('product.createdAt', 'ASC');
         }
 
-        return await queryBuilder.getMany();
+        return count
+            ? await queryBuilder.getCount()
+            : {
+                  product: await queryBuilder
+                      .skip((+page! - 1) * 12)
+                      .take(12)
+                      .getMany(),
+              };
     }
 
     async fetchDetailProduct({ id }: fetchDetailProductType) {
@@ -189,6 +222,6 @@ export class ProductService {
             .leftJoin('product.gallery', 'gallery')
             .leftJoinAndSelect('product.info', 'info');
 
-        return await queryBuilder.getMany();
+        return await queryBuilder.getOne();
     }
 }

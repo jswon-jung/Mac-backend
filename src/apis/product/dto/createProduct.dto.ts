@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 import { Product } from '../../../database/entity/product.entity';
 
 interface colorObj {
@@ -32,7 +32,8 @@ export class CreateProductDTO {
     @IsString()
     thumbnail: Product['thumbnail'];
 
-    @IsString()
+    @IsArray()
+    @IsString({ each: true })
     gallery: string[];
 
     @IsString()
@@ -53,7 +54,8 @@ export class CreateProductDTO {
     @IsString()
     collection: Product['collection'];
 
-    @IsString()
+    @IsArray()
+    @IsString({ each: true })
     tag: string[];
 
     @IsString()
