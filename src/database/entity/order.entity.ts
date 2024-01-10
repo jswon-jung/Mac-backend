@@ -4,9 +4,6 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Product } from './product.entity';
-import { Shopping } from './shopping.entity';
 
 @Entity()
 export class Order {
@@ -14,19 +11,19 @@ export class Order {
     id!: string;
 
     @Column()
-    address!: User['address'];
+    address!: string;
 
     @Column()
-    detailAddress!: User['detailAddress'];
+    detailAddress!: string;
 
     @Column()
-    productId!: Product['id'];
+    productId!: string;
 
     @Column()
-    count!: Shopping['count'];
+    count!: number;
 
     @Column()
-    option!: Shopping['option'];
+    option!: string;
 
     @Column()
     orderNumber!: number;

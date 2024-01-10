@@ -6,9 +6,11 @@ export type categoryType = {
 };
 
 export type fetchProductsType = {
-    id: User['id'];
+    id?: User['id'];
     category: string;
-    order: string;
+    order?: string;
+    count?: string;
+    page?: string;
 };
 
 export type fetchDetailProductType = {

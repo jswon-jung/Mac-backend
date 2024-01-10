@@ -3,6 +3,7 @@ import { Container } from 'typedi';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { ProductService } from './products.service';
 import { CreateProductDTO } from './dto/createProduct.dto';
+import Validate from '../../common/validator/validateDTO';
 import {
     categoryType,
     fetchDetailProductType,
@@ -20,7 +21,7 @@ class ProductController {
     init() {
         this.router.post(
             '/createProduct',
-            // Validate.createProduct,
+            Validate.createProduct,
             asyncHandler(this.createProduct.bind(this)),
         );
 
@@ -60,13 +61,15 @@ class ProductController {
 
     async fetchProducts(req: Request, res: Response) {
         // #swagger.tags = ['Product']
-        const { id, category, order } =
+        const { id, category, order, count, page } =
             req.query as fetchProductsType;
         res.status(200).json({
             data: await this.productService.fetchProducts({
                 id,
                 category,
                 order,
+                count,
+                page,
             }),
         });
     }
