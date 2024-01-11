@@ -16,10 +16,13 @@ import { Info } from '../../database/entity/info.entity';
 import { randomProduct } from '../../common/util/product/randomProduct';
 import CustomError from '../../common/error/customError';
 import {
+    collectionType,
     fetchDetailProductType,
     fetchProductsType,
 } from '../../common/type';
 import { UserService } from '../users/users.service';
+import { Shopping } from '../../database/entity/shopping.entity';
+import { ShoppingService } from '../shopping/shopping.service';
 
 @Service()
 export class ProductService {
@@ -28,7 +31,11 @@ export class ProductService {
     tagRepo = AppDataSource.getRepository(Tag);
     colorRepo = AppDataSource.getRepository(Color);
     infoRepo = AppDataSource.getRepository(Info);
-    constructor(private readonly userService: UserService) {}
+
+    constructor(
+        private readonly userService: UserService,
+        private readonly shoppingService: ShoppingService,
+    ) {}
 
     async createProduct({ createProductDTO }: ICreateProductDTO) {
         const { gallery, tag, color, info, ...rest } =
@@ -123,11 +130,17 @@ export class ProductService {
         count,
         page,
     }: fetchProductsType) {
-        id && (await this.userService.isUserByID({ id }));
-
+        const productIds = [] as string[];
         if (id) {
-            await this.userService.isUserByID;
-            //todo 유저 id에 해당하는 찜한 데이터 id 가져오기
+            await this.userService.isUserByID({ id });
+
+            const list = await this.shoppingService.getShopping({
+                id,
+            });
+
+            list.list.forEach((el) => {
+                productIds.push(el.productId);
+            });
         }
 
         const queryBuilder = this.productRepo
@@ -141,6 +154,7 @@ export class ProductService {
                 'product.review',
                 'tag.tag',
                 'color.code',
+                'color.name',
             ])
             .leftJoin('product.tag', 'tag')
             .leftJoin('product.color', 'color')
@@ -190,14 +204,21 @@ export class ProductService {
                       .orderBy('product.createdAt', 'ASC');
         }
 
-        return count
-            ? await queryBuilder.getCount()
-            : {
-                  product: await queryBuilder
-                      .skip((+page! - 1) * 12)
-                      .take(12)
-                      .getMany(),
-              };
+        if (count) return await queryBuilder.getCount();
+        else {
+            let result = await queryBuilder
+                .skip((+page! - 1) * 12)
+                .take(12)
+                .getMany();
+            if (id) {
+                result = result.map((el) => {
+                    return productIds.includes(el.id)
+                        ? { ...el, isShopping: true }
+                        : { ...el, isShopping: false };
+                });
+                return result;
+            } else return result;
+        }
     }
 
     async fetchDetailProduct({ id }: fetchDetailProductType) {
@@ -214,6 +235,8 @@ export class ProductService {
                 'product.price',
                 'product.summary',
                 'product.content',
+                'product.mainCategory',
+                'product.subCategory',
                 'gallery.gallery',
                 'tag.tag',
             ])
@@ -223,5 +246,12 @@ export class ProductService {
             .leftJoinAndSelect('product.info', 'info');
 
         return await queryBuilder.getOne();
+    }
+
+    async fetchCollection({ collection }: collectionType) {
+        return await this.productRepo.find({
+            where: { collection },
+            select: ['id', 'name', 'thumbnail'],
+        });
     }
 }

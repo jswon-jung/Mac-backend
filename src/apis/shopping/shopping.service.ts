@@ -24,13 +24,27 @@ export class ShoppingService {
 
     async addProduct({ addProductDTO, id }: IAddProductDTO) {
         await this.userService.isUserByID({ id });
+        const { option, productId } = addProductDTO;
 
-        return await getOrderNumber();
+        const chk = await this.shoppingRepo.findOne({
+            where: {
+                user: { id },
+                option,
+                productId,
+            },
+        });
 
-        // return await this.shoppingRepo.save({
-        //     ...addProductDTO,
-        //     user: { id },
-        // });
+        if (chk)
+            throw new CustomError(
+                '이미 동일한 조건의 상품이 장바구니에 있습니다',
+                400,
+            );
+        else {
+            return await this.shoppingRepo.save({
+                ...addProductDTO,
+                user: { id },
+            });
+        }
     }
 
     async deleteProduct({

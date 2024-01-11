@@ -6,6 +6,7 @@ import { CreateProductDTO } from './dto/createProduct.dto';
 import Validate from '../../common/validator/validateDTO';
 import {
     categoryType,
+    collectionType,
     fetchDetailProductType,
     fetchProductsType,
 } from '../../common/type';
@@ -38,6 +39,11 @@ class ProductController {
         this.router.get(
             '/fetchDetailProduct',
             asyncHandler(this.fetchDetailProduct.bind(this)),
+        );
+
+        this.router.get(
+            '/fetchCollection',
+            asyncHandler(this.fetchCollection.bind(this)),
         );
     }
 
@@ -80,6 +86,16 @@ class ProductController {
         res.status(200).json({
             data: await this.productService.fetchDetailProduct({
                 id,
+            }),
+        });
+    }
+
+    async fetchCollection(req: Request, res: Response) {
+        // #swagger.tags = ['Product']
+        const { collection } = req.query as collectionType;
+        res.status(200).json({
+            data: await this.productService.fetchCollection({
+                collection,
             }),
         });
     }
