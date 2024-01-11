@@ -1,6 +1,7 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
@@ -27,4 +28,8 @@ export class Shopping {
     @Column()
     @CreateDateColumn()
     createdAt!: Date;
+
+    @Column()
+    @DeleteDateColumn()
+    deletedAt!: Date;
 }
