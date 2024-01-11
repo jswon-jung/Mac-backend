@@ -1,4 +1,5 @@
 import { Product } from '../database/entity/product.entity';
+import { Shopping } from '../database/entity/shopping.entity';
 import { User } from '../database/entity/user.entity';
 
 export type categoryType = {
@@ -31,4 +32,8 @@ export type emailType = {
 
 export type productIdType = {
     productId: Product['id'];
+};
+
+export type shoppingIdType = {
+    shoppingId: Shopping['id'];
 };
