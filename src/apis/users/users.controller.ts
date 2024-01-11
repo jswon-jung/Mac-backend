@@ -7,6 +7,8 @@ import { SmsService } from '../../common/util/sms/sms.service';
 import { SendTokenSmsDTO } from '../../common/util/sms/dto/sendTokenSMS.dto';
 import { ValidateTokenDTO } from '../../common/util/sms/dto/validateToken.dto';
 import { CreateUserDTO } from './dto/createUser.dto';
+import { emailType } from '../../common/type';
+import CustomError from '../../common/error/customError';
 
 class UserController {
     router = Router();
@@ -37,6 +39,12 @@ class UserController {
             Validate.createUser,
             asyncHandler(this.createUser.bind(this)),
         );
+
+        this.router.get(
+            '/getUserByEmail',
+            // Validate.validateToken,
+            asyncHandler(this.getUserByEmail.bind(this)),
+        );
     }
 
     async sendSMS(req: Request, res: Response) {
@@ -63,6 +71,23 @@ class UserController {
                 createUserDTO: req.body as CreateUserDTO,
             }),
         });
+    }
+
+    async getUserByEmail(req: Request, res: Response) {
+        // #swagger.tags = ['Users']
+        const { email } = req.query as emailType;
+
+        const result = await this.userService.isUserByEmail({
+            email,
+        });
+
+        if (result)
+            res.status(200).json({
+                data: await this.userService.isUserByEmail({
+                    email,
+                }),
+            });
+        else throw new CustomError('일치하는 이메일이 없습니다', 400);
     }
 }
 

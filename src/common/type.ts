@@ -25,6 +25,10 @@ export type idType = {
     id: User['id'];
 };
 
+export type emailType = {
+    email: User['email'];
+};
+
 export type productIdType = {
     productId: Product['id'];
 };
