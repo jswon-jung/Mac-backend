@@ -4,7 +4,11 @@ import { ShoppingService } from './shopping.service';
 import { asyncHandler } from '../../middleware/asyncHandler';
 import { AddProductDTO } from './dto/addProduct.dto';
 import AccessGuard from '../../middleware/auth.guard/access.guard';
-import { idType, productIdType } from '../../common/type';
+import {
+    idType,
+    productIdType,
+    shoppingIdType,
+} from '../../common/type';
 import { DeleteShoppingDTO } from './dto/deleteShopping.dto';
 import { UpdateShoppingDTO } from './dto/updateShopping.dto';
 
@@ -46,18 +50,18 @@ class ShoppingController {
         );
 
         this.router.patch(
-            '/update',
+            '/updateShopping',
             // Validate.createProduct,
             AccessGuard.handle,
             asyncHandler(this.updateShopping.bind(this)),
         );
 
-        this.router.get(
-            '/getOrder',
-            // Validate.createProduct,
-            AccessGuard.handle,
-            asyncHandler(this.getOrder.bind(this)),
-        );
+        // this.router.get(
+        //     '/getOrder',
+        //     // Validate.createProduct,
+        //     AccessGuard.handle,
+        //     asyncHandler(this.getOrder.bind(this)),
+        // );
 
         //todo 배송지 변경하기
     }
@@ -78,9 +82,11 @@ class ShoppingController {
         // #swagger.tags = ['Shopping']
         const { id } = req.user as idType;
 
+        const { shoppingId } = req.query as shoppingIdType;
+
         res.status(200).json({
             data: await this.shoppingService.deleteProduct({
-                deleteShoppingDTO: req.body as DeleteShoppingDTO,
+                shoppingId,
                 id,
             }),
         });
@@ -122,16 +128,16 @@ class ShoppingController {
         });
     }
 
-    async getOrder(req: Request, res: Response) {
-        // #swagger.tags = ['Shopping']
-        const { id } = req.user as idType;
+    // async getOrder(req: Request, res: Response) {
+    //     // #swagger.tags = ['Shopping']
+    //     const { id } = req.user as idType;
 
-        res.status(200).json({
-            data: await this.shoppingService.getOrder({
-                id,
-            }),
-        });
-    }
+    //     res.status(200).json({
+    //         data: await this.shoppingService.getOrder({
+    //             id,
+    //         }),
+    //     });
+    // }
 }
 
 export default new ShoppingController(Container.get(ShoppingService));

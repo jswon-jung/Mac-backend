@@ -12,7 +12,6 @@ import { idType } from '../../common/type';
 import { Product } from '../../database/entity/product.entity';
 import CustomError from '../../common/error/customError';
 import { Color } from '../../database/entity/color.entity';
-import { getOrderNumber } from '../../common/util/order/getOrderNumber';
 
 @Service()
 export class ShoppingService {
@@ -40,24 +39,31 @@ export class ShoppingService {
                 400,
             );
         else {
-            return await this.shoppingRepo.save({
+            const result = await this.shoppingRepo.save({
                 ...addProductDTO,
                 user: { id },
             });
+
+            return result ? true : false;
         }
     }
 
-    async deleteProduct({
-        deleteShoppingDTO,
-        id,
-    }: IDeleteShoppingDTO): Promise<boolean> {
+    async deleteProduct({ shoppingId, id }: IDeleteShoppingDTO) {
         await this.userService.isUserByID({ id });
 
-        const { shoppingId } = deleteShoppingDTO;
+        const chk = await this.shoppingRepo.findOne({
+            where: { id: shoppingId },
+        });
 
-        const result = await this.shoppingRepo.delete(shoppingId);
-
-        return result.affected ? true : false;
+        if (chk) {
+            const result = await this.shoppingRepo.delete({
+                id: shoppingId,
+            });
+            if (result.affected)
+                return await this.getShopping({ id });
+        } else {
+            throw new CustomError('shoppingId가 잘못되었습니다', 400);
+        }
     }
 
     async getShopping({ id }: idType) {
@@ -95,20 +101,27 @@ export class ShoppingService {
     async fetchOption({ id, productId }: IfetchOption) {
         await this.userService.isUserByID({ id });
 
-        return await this.colorRepo.find({
-            where: { product: { id: productId } },
-            select: ['name', 'code', 'desc'],
+        const chk = await this.productRepo.findOne({
+            where: { id: productId },
         });
+
+        if (chk) {
+            return await this.colorRepo.find({
+                where: { product: { id: productId } },
+                select: ['name', 'code', 'desc'],
+            });
+        } else
+            throw new CustomError('productId가 잘못되었습니다', 400);
     }
 
     async updateShopping({
         updateShoppingDTO,
         id,
-    }: IUpdateShoppingDTO): Promise<boolean> {
+    }: IUpdateShoppingDTO) {
         await this.userService.isUserByID({ id });
 
         if (Array.isArray(updateShoppingDTO)) {
-            updateShoppingDTO.forEach(async (el) => {
+            for (const el of updateShoppingDTO) {
                 const { shoppingId, option, count } = el;
 
                 const updateField = {
@@ -124,14 +137,16 @@ export class ShoppingService {
                     updateField,
                 );
 
-                if (!result.affected) return false;
-            });
-        } else
+                if (result.affected) {
+                    return await this.getOrder({ id });
+                }
+            }
+        } else {
             throw new CustomError(
                 '입력값의 형식이 잘못되었습니다',
                 400,
             );
-        return true;
+        }
     }
 
     async getOrder({ id }: idType) {
@@ -144,6 +159,7 @@ export class ShoppingService {
             phone: user.phone,
             address: user.address,
             detailAddress: user.detailAddress,
+            addressCode: user.addressCode,
             point: user.point,
             list,
         };
