@@ -45,6 +45,11 @@ class ProductController {
             '/fetchCollection',
             asyncHandler(this.fetchCollection.bind(this)),
         );
+
+        this.router.get(
+            '/recommendProduct',
+            asyncHandler(this.recommendProduct.bind(this)),
+        );
     }
 
     async createProduct(req: Request, res: Response) {
@@ -97,6 +102,13 @@ class ProductController {
             data: await this.productService.fetchCollection({
                 collection,
             }),
+        });
+    }
+
+    async recommendProduct(req: Request, res: Response) {
+        // #swagger.tags = ['Product']
+        res.status(200).json({
+            data: await this.productService.recommendProduct(),
         });
     }
 }
