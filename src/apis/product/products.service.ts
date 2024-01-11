@@ -157,8 +157,8 @@ export class ProductService {
                 'color.name',
             ])
             .leftJoin('product.tag', 'tag')
-            .leftJoin('product.color', 'color')
-            .orderBy('product.createdAt', 'ASC');
+            .leftJoin('product.color', 'color');
+        // .orderBy('product.createdAt', 'ASC');
 
         if (category === 'ALL') {
             order === '인기순'
@@ -253,5 +253,26 @@ export class ProductService {
             where: { collection },
             select: ['id', 'name', 'thumbnail'],
         });
+    }
+
+    async recommendProduct() {
+        return await this.productRepo
+            .createQueryBuilder('product')
+            .select([
+                'product.id',
+                'product.thumbnail',
+                'product.name',
+                'product.price',
+                'product.createdAt',
+                'product.review',
+                'tag.tag',
+                'color.code',
+                'color.name',
+            ])
+            .leftJoin('product.tag', 'tag')
+            .leftJoin('product.color', 'color')
+            .orderBy('RAND()')
+            .limit(4)
+            .getMany();
     }
 }
