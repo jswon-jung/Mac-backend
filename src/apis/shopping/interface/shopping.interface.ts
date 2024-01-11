@@ -10,7 +10,7 @@ export interface IAddProductDTO {
 }
 
 export interface IDeleteShoppingDTO {
-    shoppingId: Shopping['id'];
+    shoppingId: Shopping['id'][];
     id: User['id'];
 }
 

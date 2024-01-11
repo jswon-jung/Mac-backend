@@ -51,19 +51,22 @@ export class ShoppingService {
     async deleteProduct({ shoppingId, id }: IDeleteShoppingDTO) {
         await this.userService.isUserByID({ id });
 
-        const chk = await this.shoppingRepo.findOne({
-            where: { id: shoppingId },
-        });
-
-        if (chk) {
-            const result = await this.shoppingRepo.delete({
-                id: shoppingId,
+        for (const el of shoppingId) {
+            const chk = await this.shoppingRepo.findOne({
+                where: { id: el },
             });
-            if (result.affected)
-                return await this.getShopping({ id });
-        } else {
-            throw new CustomError('shoppingId가 잘못되었습니다', 400);
+
+            if (chk) {
+                const result = await this.shoppingRepo.delete({
+                    id: el,
+                });
+            } else
+                throw new CustomError(
+                    'shoppingId가 잘못되었습니다',
+                    400,
+                );
         }
+        return await this.getShopping({ id });
     }
 
     async getShopping({ id }: idType) {

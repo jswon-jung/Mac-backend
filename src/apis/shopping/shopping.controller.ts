@@ -82,7 +82,7 @@ class ShoppingController {
         // #swagger.tags = ['Shopping']
         const { id } = req.user as idType;
 
-        const { shoppingId } = req.query as shoppingIdType;
+        const { shoppingId } = req.body as DeleteShoppingDTO;
 
         res.status(200).json({
             data: await this.shoppingService.deleteProduct({
