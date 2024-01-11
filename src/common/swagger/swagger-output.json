@@ -1068,9 +1068,11 @@
                                                 ],
                                                 "color": [
                                                     {
+                                                        "name": "색상명",
                                                         "code": "색상코드"
                                                     }
-                                                ]
+                                                ],
+                                                "isShopping": true
                                             }
                                         ]
                                     }
@@ -1112,10 +1114,7 @@
                                                                         "tag": {
                                                                             "type": "string"
                                                                         }
-                                                                    },
-                                                                    "required": [
-                                                                        "tag"
-                                                                    ]
+                                                                    }
                                                                 }
                                                             },
                                                             "color": {
@@ -1123,14 +1122,17 @@
                                                                 "items": {
                                                                     "type": "object",
                                                                     "properties": {
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
                                                                         "code": {
                                                                             "type": "string"
                                                                         }
-                                                                    },
-                                                                    "required": [
-                                                                        "code"
-                                                                    ]
+                                                                    }
                                                                 }
+                                                            },
+                                                            "isShopping": {
+                                                                "type": "boolean"
                                                             }
                                                         }
                                                     }
@@ -1184,6 +1186,8 @@
                                         "content": "컨텐트",
                                         "engName": "영문상품명",
                                         "price": 10000,
+                                        "mainCategory": "메인카테고리",
+                                        "subCategory": "서브카테고리",
                                         "weight": "상품 무게",
                                         "summary": "상품 요약",
                                         "tag": [
@@ -1237,6 +1241,12 @@
                                                     "type": "string"
                                                 },
                                                 "thumbnail": {
+                                                    "type": "string"
+                                                },
+                                                "mainCategory": {
+                                                    "type": "string"
+                                                },
+                                                "subCategory": {
                                                     "type": "string"
                                                 },
                                                 "price": {
@@ -1346,6 +1356,82 @@
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/fetchCollection": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "컬렉션 상품 조회하기",
+                "parameters": [
+                    {
+                        "name": "collection",
+                        "in": "query",
+                        "description": "HOLIDAY, LISA, LUNAR 중 하나",
+                        "schema": {
+                            "type": "string",
+                            "format": "collection",
+                            "example": "LISA"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": "adfhttwerqwrasxczx",
+                                            "name": "상품명",
+                                            "thumbnail": "상품 썸네일 사진"
+                                        }
+                                    ]
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "thumbnail": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "collection 값이 잘못된 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "collection이 잘못되었습니다"
                                 }
                             }
                         }

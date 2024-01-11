@@ -13,6 +13,10 @@ export type fetchProductsType = {
     page?: string;
 };
 
+export type collectionType = {
+    collection: Product['collection'];
+};
+
 export type fetchDetailProductType = {
     id: Product['id'];
 };

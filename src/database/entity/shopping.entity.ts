@@ -24,6 +24,7 @@ export class Shopping {
     @Column()
     option!: string;
 
+    @Column()
     @CreateDateColumn()
     createdAt!: Date;
 }
