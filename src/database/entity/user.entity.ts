@@ -5,6 +5,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Shopping } from './shopping.entity';
+import { Order } from './order.entity';
 
 export enum PROVIDER_ENUM {
     GOOGLE = 'google',
@@ -15,31 +16,34 @@ export enum PROVIDER_ENUM {
 @Entity()
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: string = '';
+    id!: string;
 
     @Column({ unique: true })
-    email: string = '';
+    email!: string;
 
     @Column({ type: 'enum', enum: PROVIDER_ENUM })
-    provider: PROVIDER_ENUM = PROVIDER_ENUM.GOOGLE;
+    provider!: PROVIDER_ENUM;
 
     @Column()
-    phone: string = '';
+    phone!: string;
 
     @Column()
-    name: string = '';
+    name!: string;
 
     @Column()
-    addressCode: string = '';
+    addressCode!: string;
 
     @Column()
-    address: string = '';
+    address!: string;
 
     @Column()
-    detailAddress: string = '';
+    detailAddress!: string;
 
     @OneToMany(() => Shopping, (shopping) => shopping.user)
     shopping!: Shopping[];
+
+    @OneToMany(() => Order, (order) => order.user)
+    order!: Order[];
 
     @Column({ default: 0 })
     point!: number;

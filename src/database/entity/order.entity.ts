@@ -2,13 +2,18 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
+
+    @ManyToOne(() => User)
+    user!: User;
 
     @Column()
     address!: string;
@@ -17,16 +22,10 @@ export class Order {
     detailAddress!: string;
 
     @Column()
-    productId!: string;
+    addressCode!: string;
 
     @Column()
-    count!: number;
-
-    @Column()
-    option!: string;
-
-    @Column()
-    orderNumber!: number;
+    orderNumber!: string;
 
     @CreateDateColumn()
     createdAt!: Date;

@@ -25,6 +25,9 @@ export class Shopping {
     @Column()
     option!: string;
 
+    @Column({ default: null })
+    orderId?: string;
+
     @Column()
     @CreateDateColumn()
     createdAt!: Date;

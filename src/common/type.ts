@@ -1,3 +1,4 @@
+import { Order } from '../database/entity/order.entity';
 import { Product } from '../database/entity/product.entity';
 import { Shopping } from '../database/entity/shopping.entity';
 import { User } from '../database/entity/user.entity';
@@ -24,6 +25,10 @@ export type fetchDetailProductType = {
 
 export type idType = {
     id: User['id'];
+};
+
+export type orderIdType = {
+    orderId: Order['id'];
 };
 
 export type emailType = {
