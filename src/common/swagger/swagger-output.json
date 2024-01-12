@@ -27,6 +27,14 @@
         {
             "name": "Product",
             "description": "상품 관련 API"
+        },
+        {
+            "name": "Shopping",
+            "description": "장바구니 관련 API"
+        },
+        {
+            "name": "Order",
+            "description": "주문내역 관련 API"
         }
     ],
     "schemes": ["http", "https"],
@@ -296,6 +304,103 @@
                                 },
                                 "schema": {
                                     "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/getUserByEmail": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "이메일로 유저정보 조회하기",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "abc@abc.com"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "id": "6d7e71d7-72a4-4bbe-bd03-00a40ce79a8e",
+                                        "email": "abc@abc.com",
+                                        "provider": "google",
+                                        "phone": "01012345678",
+                                        "name": "홍길동",
+                                        "addressCode": "16340",
+                                        "address": "경기도 수원시~",
+                                        "detailAddress": "아파트 111-1602",
+                                        "point": 0
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "provider": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "addressCode": {
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "detailAddress": {
+                                                    "type": "string"
+                                                },
+                                                "point": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "일치하는 이메일이 없는 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "일치하는 이메일이 없습니다"
                                 }
                             }
                         }
@@ -1432,6 +1537,990 @@
                             "application/json": {
                                 "example": {
                                     "Error": "collection이 잘못되었습니다"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/recommendProduct": {
+            "get": {
+                "tags": ["Product"],
+                "summary": "상품 추천하기",
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "product": [
+                                            {
+                                                "id": "adfhttwerqwrasxczx",
+                                                "name": "상품명",
+                                                "thumbnail": "상품 썸네일 사진",
+                                                "price": 10000,
+                                                "createdAt": "상품 등록 날짜",
+                                                "review": 3,
+                                                "tag": [
+                                                    {
+                                                        "tag": "태그"
+                                                    }
+                                                ],
+                                                "color": [
+                                                    {
+                                                        "name": "색상명",
+                                                        "code": "색상코드"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "product": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "thumbnail": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "number"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string"
+                                                            },
+                                                            "review": {
+                                                                "type": "number"
+                                                            },
+                                                            "tag": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "tag": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "color": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "code": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/add": {
+            "post": {
+                "tags": ["Shopping"],
+                "summary": "장바구니 넣기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "productId": {
+                                        "type": "string",
+                                        "example": "e0ca41ca-7c31-406b-acb0-2a33c05be671"
+                                    },
+                                    "option": {
+                                        "type": "string",
+                                        "example": "화이트"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "장바구니 등록 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": true
+                                },
+                                "schema": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "이미 장바구니에 동일한 조건의 상품이 있는 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "이미 동일한 조건의 상품이 장바구니에 있습니다"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/delete": {
+            "delete": {
+                "tags": ["Shopping"],
+                "summary": "장바구니 상품 삭제하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "shoppingId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "adfhttwerqwrasxczx"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "list": [
+                                            {
+                                                "count": 1,
+                                                "id": "adfhttwerqwrasxczx",
+                                                "productId": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                "option": "블랙",
+                                                "product": {
+                                                    "id": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                    "name": "상품명",
+                                                    "thumbnail": "상품 썸네일 사진",
+                                                    "price": 68000
+                                                }
+                                            }
+                                        ],
+                                        "priceSum": 10000,
+                                        "sum": 14000
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "list": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "count": {
+                                                                "type": "number"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "productId": {
+                                                                "type": "string"
+                                                            },
+                                                            "option": {
+                                                                "type": "string"
+                                                            },
+                                                            "product": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "thumbnail": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "price": {
+                                                                        "type": "number"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "priceSum": {
+                                                    "type": "number"
+                                                },
+                                                "sum": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "shoppingId가 잘못된 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "shoppingId가 잘못되었습니다"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/getShopping": {
+            "get": {
+                "tags": ["Shopping"],
+                "summary": "장바구니 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "list": [
+                                            {
+                                                "count": 1,
+                                                "id": "adfhttwerqwrasxczx",
+                                                "productId": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                "option": "블랙",
+                                                "product": {
+                                                    "id": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                    "name": "상품명",
+                                                    "thumbnail": "상품 썸네일 사진",
+                                                    "price": 68000
+                                                }
+                                            }
+                                        ],
+                                        "priceSum": 10000,
+                                        "sum": 14000
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "list": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "count": {
+                                                                "type": "number"
+                                                            },
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "productId": {
+                                                                "type": "string"
+                                                            },
+                                                            "option": {
+                                                                "type": "string"
+                                                            },
+                                                            "product": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "thumbnail": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "price": {
+                                                                        "type": "number"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "priceSum": {
+                                                    "type": "number"
+                                                },
+                                                "sum": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/fetchOption": {
+            "get": {
+                "tags": ["Shopping"],
+                "summary": "장바구니 상품 옵션 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "productId",
+                            "example": "e0ca41ca-7c31-406b-acb0-2a33c05be671"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": [
+                                        {
+                                            "name": "색상명",
+                                            "desc": "색상 설명",
+                                            "code": "색상 코드"
+                                        }
+                                    ]
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "desc": {
+                                                        "type": "string"
+                                                    },
+                                                    "code": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "productId가 잘못된 경우",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "Error": "productId가 잘못되었습니다"
+                                },
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shopping/updateShopping": {
+            "patch": {
+                "tags": ["Shopping"],
+                "summary": "장바구니 상품 옵션 또는 수량 수정하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "shoppingId": {
+                                            "type": "string",
+                                            "example": "a688eebb-2ba2-4476-80b6-0c4f0d152e3c"
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "option": {
+                                            "type": "string",
+                                            "example": "색상명"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "name": "유저 이름",
+                                        "phone": "휴대폰 번호",
+                                        "address": "주소",
+                                        "detailAddress": "상세주소",
+                                        "addressCode": "우편번호",
+                                        "point": 0,
+                                        "list": [
+                                            {
+                                                "count": 1,
+                                                "id": "03b3c558-da26-4690-a6b0-6b33f1b3d6dd",
+                                                "productId": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                "option": "상품 색상",
+                                                "product": {
+                                                    "id": "0f9f3995-3854-494f-96d2-c1d3e47d7572",
+                                                    "name": "상품명",
+                                                    "thumbnail": "상품 썸네일 이미지",
+                                                    "price": 68000
+                                                }
+                                            }
+                                        ],
+                                        "priceSum": 100000,
+                                        "sum": 104000
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "phone": {
+                                                    "type": "string"
+                                                },
+                                                "address": {
+                                                    "type": "string"
+                                                },
+                                                "detailAddress": {
+                                                    "type": "string"
+                                                },
+                                                "addressCode": {
+                                                    "type": "string"
+                                                },
+                                                "point": {
+                                                    "type": "integer"
+                                                },
+                                                "list": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "count": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "productId": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "option": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "product": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "name": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "thumbnail": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "price": {
+                                                                                "type": "integer"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "priceSum": {
+                                                    "type": "number"
+                                                },
+                                                "sum": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order/saveOrder": {
+            "post": {
+                "tags": ["Order"],
+                "summary": "주문내역 저장하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "address": {
+                                        "type": "string",
+                                        "example": "주소"
+                                    },
+                                    "detailAddress": {
+                                        "type": "string",
+                                        "example": "상세주소"
+                                    },
+                                    "addressCode": {
+                                        "type": "string",
+                                        "example": "우편번호"
+                                    },
+                                    "shoppingId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "e0ca41ca-7c31-406b-acb0-2a33c05be671"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "info": [
+                                            {
+                                                "id": "03b3c558-da26-4690-a6b0-6b33f1b3d6dd",
+                                                "address": "경기도 수원시~",
+                                                "detailAddress": "아파트 111-1602",
+                                                "addressCode": "16340",
+                                                "orderNumber": "93271963",
+                                                "createdAt": "2024-01-10T05:11:52.254Z",
+                                                "user": {
+                                                    "phone": "01012345678",
+                                                    "name": "홍길동"
+                                                }
+                                            }
+                                        ],
+                                        "list": [
+                                            {
+                                                "count": 1,
+                                                "productId": "03b3c558-da26-4690-a6b0-6b33f1b3d6dd",
+                                                "option": "블랙",
+                                                "price": 10000,
+                                                "name": "상품명",
+                                                "thumbnail": "상품 썸네일 사진"
+                                            }
+                                        ],
+                                        "priceSum": 100000,
+                                        "sum": 104000
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "info": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "address": {
+                                                                "type": "string"
+                                                            },
+                                                            "detailAddress": {
+                                                                "type": "string"
+                                                            },
+                                                            "addressCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "orderNumber": {
+                                                                "type": "string"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string"
+                                                            },
+                                                            "user": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "list": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "count": {
+                                                                "type": "number"
+                                                            },
+                                                            "productId": {
+                                                                "type": "string"
+                                                            },
+                                                            "option": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "thumbnail": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "priceSum": {
+                                                    "type": "number"
+                                                },
+                                                "sum": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "서버 에러",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "error": "서버 문제"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order/fetchOneOrder": {
+            "get": {
+                "tags": ["Order"],
+                "summary": "단일 주문내역서 조회하기",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "orderId",
+                            "example": "6d7e71d7-72a4-4bbe-bd03-00a40ce79a8e"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "응답 성공",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "data": {
+                                        "info": [
+                                            {
+                                                "id": "03b3c558-da26-4690-a6b0-6b33f1b3d6dd",
+                                                "address": "경기도 수원시~",
+                                                "detailAddress": "아파트 111-1602",
+                                                "addressCode": "16340",
+                                                "orderNumber": "93271963",
+                                                "createdAt": "2024-01-10T05:11:52.254Z",
+                                                "user": {
+                                                    "phone": "01012345678",
+                                                    "name": "홍길동"
+                                                }
+                                            }
+                                        ],
+                                        "list": [
+                                            {
+                                                "count": 1,
+                                                "productId": "03b3c558-da26-4690-a6b0-6b33f1b3d6dd",
+                                                "option": "블랙",
+                                                "price": 10000,
+                                                "name": "상품명",
+                                                "thumbnail": "상품 썸네일 사진"
+                                            }
+                                        ],
+                                        "priceSum": 100000,
+                                        "sum": 104000
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "info": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "address": {
+                                                                "type": "string"
+                                                            },
+                                                            "detailAddress": {
+                                                                "type": "string"
+                                                            },
+                                                            "addressCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "orderNumber": {
+                                                                "type": "string"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string"
+                                                            },
+                                                            "user": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "phone": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "list": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "count": {
+                                                                "type": "number"
+                                                            },
+                                                            "productId": {
+                                                                "type": "string"
+                                                            },
+                                                            "option": {
+                                                                "type": "string"
+                                                            },
+                                                            "price": {
+                                                                "type": "number"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "thumbnail": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "priceSum": {
+                                                    "type": "number"
+                                                },
+                                                "sum": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
