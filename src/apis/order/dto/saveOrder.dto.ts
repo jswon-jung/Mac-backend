@@ -1,7 +1,5 @@
-import { IsNumber, IsString } from 'class-validator';
-import { Product } from '../../../database/entity/product.entity';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 import { User } from '../../../database/entity/user.entity';
-import { Shopping } from '../../../database/entity/shopping.entity';
 
 export class SaveOrderDTO {
     @IsString()
@@ -11,14 +9,8 @@ export class SaveOrderDTO {
     detailAddress!: User['detailAddress'];
 
     @IsString()
-    productId!: Product['id'];
+    addressCode!: User['addressCode'];
 
     @IsNumber()
-    count!: Shopping['count'];
-
-    @IsString()
-    option!: Shopping['option'];
-
-    @IsNumber()
-    orderNumber!: number;
+    sum!: number;
 }

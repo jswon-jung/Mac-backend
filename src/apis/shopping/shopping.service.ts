@@ -57,7 +57,7 @@ export class ShoppingService {
             });
 
             if (chk) {
-                const result = await this.shoppingRepo.delete({
+                await this.shoppingRepo.delete({
                     id: el,
                 });
             } else
@@ -85,7 +85,7 @@ export class ShoppingService {
                     where: { id: el.productId },
                     select: ['id', 'thumbnail', 'name', 'price'],
                 });
-                priceSum += product!.price;
+                priceSum += product!.price * el.count;
 
                 return {
                     ...el,
@@ -135,15 +135,12 @@ export class ShoppingService {
                 if (option) updateField.option = option;
                 if (count) updateField.count = count;
 
-                const result = await this.shoppingRepo.update(
+                await this.shoppingRepo.update(
                     { id: shoppingId },
                     updateField,
                 );
-
-                if (result.affected) {
-                    return await this.getOrder({ id });
-                }
             }
+            return await this.getOrder({ id });
         } else {
             throw new CustomError(
                 '입력값의 형식이 잘못되었습니다',
@@ -164,7 +161,7 @@ export class ShoppingService {
             detailAddress: user.detailAddress,
             addressCode: user.addressCode,
             point: user.point,
-            list,
+            ...list,
         };
     }
 }
