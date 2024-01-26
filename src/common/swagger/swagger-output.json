@@ -1570,20 +1570,7 @@
                                                 "id": "adfhttwerqwrasxczx",
                                                 "name": "상품명",
                                                 "thumbnail": "상품 썸네일 사진",
-                                                "price": 10000,
-                                                "createdAt": "상품 등록 날짜",
-                                                "review": 3,
-                                                "tag": [
-                                                    {
-                                                        "tag": "태그"
-                                                    }
-                                                ],
-                                                "color": [
-                                                    {
-                                                        "name": "색상명",
-                                                        "code": "색상코드"
-                                                    }
-                                                ]
+                                                "price": 10000
                                             }
                                         ]
                                     }
@@ -1610,37 +1597,6 @@
                                                             },
                                                             "price": {
                                                                 "type": "number"
-                                                            },
-                                                            "createdAt": {
-                                                                "type": "string"
-                                                            },
-                                                            "review": {
-                                                                "type": "number"
-                                                            },
-                                                            "tag": {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "tag": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                }
-                                                            },
-                                                            "color": {
-                                                                "type": "array",
-                                                                "items": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "name": {
-                                                                            "type": "string"
-                                                                        },
-                                                                        "code": {
-                                                                            "type": "string"
-                                                                        }
-                                                                    }
-                                                                }
                                                             }
                                                         }
                                                     }
