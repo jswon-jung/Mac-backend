@@ -85,12 +85,26 @@ export class ProductService {
     }: IFetchBanner): Promise<IFetchBannerReturn[]> {
         if (category === 'ALL') {
             const data = await this.productRepo.find({
-                select: ['id', 'thumbnail', 'name', 'price'],
+                select: [
+                    'id',
+                    'thumbnail',
+                    'name',
+                    'price',
+                    'mainCategory',
+                    'subCategory',
+                ],
             });
             return await randomProduct(data);
         } else if (category === 'BEST') {
             return await this.productRepo.find({
-                select: ['id', 'thumbnail', 'name', 'price'],
+                select: [
+                    'id',
+                    'thumbnail',
+                    'name',
+                    'price',
+                    'mainCategory',
+                    'subCategory',
+                ],
                 order: {
                     review: 'DESC',
                 },
@@ -98,7 +112,14 @@ export class ProductService {
             });
         } else if (category === 'NEW') {
             return await this.productRepo.find({
-                select: ['id', 'thumbnail', 'name', 'price'],
+                select: [
+                    'id',
+                    'thumbnail',
+                    'name',
+                    'price',
+                    'mainCategory',
+                    'subCategory',
+                ],
                 order: {
                     createdAt: 'ASC',
                 },
@@ -116,7 +137,14 @@ export class ProductService {
                             category as keyof typeof MAINCATEGORY_ENUM
                         ],
                 },
-                select: ['id', 'thumbnail', 'name', 'price'],
+                select: [
+                    'id',
+                    'thumbnail',
+                    'name',
+                    'price',
+                    'mainCategory',
+                    'subCategory',
+                ],
             });
             return await randomProduct(data);
         } else
@@ -150,6 +178,8 @@ export class ProductService {
                 'product.thumbnail',
                 'product.name',
                 'product.price',
+                'product.mainCategory',
+                'product.subCategory',
                 'product.createdAt',
                 'product.review',
                 'tag.tag',
@@ -158,7 +188,6 @@ export class ProductService {
             ])
             .leftJoin('product.tag', 'tag')
             .leftJoin('product.color', 'color');
-        // .orderBy('product.createdAt', 'ASC');
 
         if (category === 'ALL') {
             order === '인기순'
@@ -206,18 +235,17 @@ export class ProductService {
 
         if (count) return await queryBuilder.getCount();
         else {
-            let result = await queryBuilder
-                .skip((+page! - 1) * 12)
-                .take(12)
-                .getMany();
+            let result = await queryBuilder.getMany();
             if (id) {
                 result = result.map((el) => {
                     return productIds.includes(el.id)
                         ? { ...el, isShopping: true }
                         : { ...el, isShopping: false };
                 });
-                return result;
-            } else return result;
+            }
+            const startIndex = (+page! - 1) * 12;
+            const endIndex = startIndex + 12;
+            return result.slice(startIndex, endIndex);
         }
     }
 

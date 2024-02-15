@@ -30,6 +30,7 @@ export enum SUBCATEGORY_ENUM {
     BLUSH = 'BLUSH',
     CUSHION = 'CUSHION',
     PRIMER = 'PRIMER',
+    PALETTE = 'PALETTE',
 }
 
 export enum COLLECTION_ENUM {
@@ -37,6 +38,7 @@ export enum COLLECTION_ENUM {
     LUNAR = 'LUNAR',
     HOLIDAY = 'HOLIDAY',
     VIVAGLAM = 'VIVAGLAM',
+    PINK = 'PINK',
     NONE = 'NONE',
 }
 

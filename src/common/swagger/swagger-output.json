@@ -996,49 +996,9 @@
                                             "id": "adfhttwerqwrasxczx",
                                             "name": "상품명",
                                             "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
-                                        },
-                                        {
-                                            "id": "adfhttwerqwrasxczx",
-                                            "name": "상품명",
-                                            "thumbnail": "상품 썸네일 사진",
-                                            "price": 10000
+                                            "price": 10000,
+                                            "mainCategory": "메인카테고리",
+                                            "subCategory": "서브카테고리"
                                         }
                                     ]
                                 },
@@ -1059,6 +1019,12 @@
                                                 },
                                                 "price": {
                                                     "type": "number"
+                                                },
+                                                "mainCategory": {
+                                                    "type": "string"
+                                                },
+                                                "subCategory": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -1109,7 +1075,7 @@
                     {
                         "name": "category",
                         "in": "query",
-                        "description": "ALL, NEW, BEST, LIP, EYE, FACE, BROW, LINER, SHADOW, BLUSH, CUSHION, FOUNDATION, POWDER, PRIMER, LIPBALM, LIPSTICK, LIQUIDLIP 중 하나",
+                        "description": "ALL, NEW, BEST, LIP, EYE, FACE, BROW, LINER, SHADOW, BLUSH, CUSHION, FOUNDATION, POWDER, PRIMER, LIPBALM, LIPSTICK, PALETTE, LIQUIDLIP 중 하나",
                         "schema": {
                             "type": "string",
                             "format": "category",
@@ -1486,7 +1452,7 @@
                     {
                         "name": "collection",
                         "in": "query",
-                        "description": "HOLIDAY, LISA, LUNAR 중 하나",
+                        "description": "HOLIDAY, LISA, LUNAR, PINK 중 하나",
                         "schema": {
                             "type": "string",
                             "format": "collection",
