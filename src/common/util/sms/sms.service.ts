@@ -1,8 +1,14 @@
-import axios from 'axios';
-import CryptoJS from 'crypto-js';
 import RedisClient from '../../../database/redisConfig';
 import { Service } from 'typedi';
 import { ValidateTokenDTO } from './dto/validateToken.dto';
+import coolsms from 'coolsms-node-sdk';
+
+const mysms = coolsms;
+
+import 'dotenv/config';
+const SMS_KEY = process.env.SMS_KEY;
+const SMS_SECRET = process.env.SMS_SECRET;
+const SMS_SENDER = process.env.SMS_SENDER;
 
 @Service()
 export class SmsService {
@@ -10,46 +16,13 @@ export class SmsService {
 
     async sendSMS(phone: string): Promise<boolean> {
         const token = this.createToken();
-        const receiver = phone;
-        const date = Date.now().toString();
-        const uri = process.env.SMS_SERVICE_ID;
-        const secretKey = process.env.SMS_SECRET_KEY!;
-        const accessKey = process.env.SMS_ACCESS_KEY!;
-        const method = 'POST';
-        const space = ' ';
-        const newLine = '\n';
-        const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
-        const url2 = `/sms/v2/services/${uri}/messages`;
-        const hmac = CryptoJS.algo.HMAC.create(
-            CryptoJS.algo.SHA256,
-            secretKey,
-        );
-        hmac.update(method);
-        hmac.update(space);
-        hmac.update(url2);
-        hmac.update(newLine);
-        hmac.update(date);
-        hmac.update(newLine);
-        hmac.update(accessKey);
-        const hash = hmac.finalize();
-        const signature = hash.toString(CryptoJS.enc.Base64);
 
-        axios({
-            method,
-            url,
-            headers: {
-                'Content-type': 'application/json; charset=utf-8',
-                'x-ncp-iam-access-key': accessKey,
-                'x-ncp-apigw-timestamp': date,
-                'x-ncp-apigw-signature-v2': signature,
-            },
-            data: {
-                type: 'SMS',
-                contentType: 'COMM',
-                from: process.env.SMS_SENDER,
-                content: `[Mac] 인증번호 [${token}]를 입력해주세요.`,
-                messages: [{ to: `${receiver}` }],
-            },
+        const messageService = new mysms(SMS_KEY!, SMS_SECRET!);
+        await messageService.sendOne({
+            autoTypeDetect: true,
+            to: phone,
+            from: SMS_SENDER!,
+            text: `[Mac] 인증번호 [${token}]를 입력해주세요.`,
         });
         await this.redis.set(phone, token, 'EX', 300);
         return true;
