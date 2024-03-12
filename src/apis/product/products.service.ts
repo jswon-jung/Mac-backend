@@ -198,9 +198,28 @@ export class ProductService {
         } else if (category === 'NEW') {
             queryBuilder.orderBy('product.createdAt', 'ASC');
         } else if (category === 'BEST') {
-            queryBuilder
-                .orderBy('product.review', 'DESC')
-                .addOrderBy('product.createdAt', 'ASC');
+            const result = {
+                LIP: {},
+                FACE: {},
+                EYE: {},
+            };
+
+            const mainCategorys = Object.keys(result);
+            for (const mainCategory of mainCategorys) {
+                const data = queryBuilder
+                    .orderBy('product.review', 'DESC')
+                    .addOrderBy('product.createdAt', 'ASC')
+                    .where('product.mainCategory = :mainCategory', {
+                        mainCategory,
+                    })
+                    .getMany();
+                if (mainCategory === 'LIP')
+                    result.LIP = (await data).slice(0, 7);
+                else if (mainCategory === 'FACE')
+                    result.FACE = (await data).slice(0, 3);
+                else result.EYE = (await data).slice(0, 3);
+            }
+            return result;
         } else if (
             category === 'EYE' ||
             category === 'FACE' ||
