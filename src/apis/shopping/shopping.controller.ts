@@ -9,7 +9,6 @@ import {
     productIdType,
     shoppingIdType,
 } from '../../common/type';
-import { DeleteShoppingDTO } from './dto/deleteShopping.dto';
 import { UpdateShoppingDTO } from './dto/updateShopping.dto';
 
 class ShoppingController {
@@ -29,7 +28,7 @@ class ShoppingController {
         );
 
         this.router.delete(
-            '/delete',
+            '/delete/:ids',
             // Validate.createProduct,
             AccessGuard.handle,
             asyncHandler(this.deleteProduct.bind(this)),
@@ -80,9 +79,9 @@ class ShoppingController {
 
     async deleteProduct(req: Request, res: Response) {
         // #swagger.tags = ['Shopping']
-        const { id } = req.user as idType;
 
-        const { shoppingId } = req.body as DeleteShoppingDTO;
+        const shoppingId = req.url.split('/')[2].split(',');
+        const { id } = req.user as idType;
 
         res.status(200).json({
             data: await this.shoppingService.deleteProduct({
