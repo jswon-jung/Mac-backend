@@ -206,19 +206,29 @@ export class ProductService {
 
             const mainCategorys = Object.keys(result);
             for (const mainCategory of mainCategorys) {
-                const data = queryBuilder
+                let data = await queryBuilder
                     .orderBy('product.review', 'DESC')
                     .addOrderBy('product.createdAt', 'ASC')
                     .where('product.mainCategory = :mainCategory', {
                         mainCategory,
                     })
                     .getMany();
+
+                if (id) {
+                    data = data.map((el) => {
+                        return productIds.includes(el.id)
+                            ? { ...el, isShopping: true }
+                            : { ...el, isShopping: false };
+                    });
+                }
+
                 if (mainCategory === 'LIP')
                     result.LIP = (await data).slice(0, 7);
                 else if (mainCategory === 'FACE')
                     result.FACE = (await data).slice(0, 3);
                 else result.EYE = (await data).slice(0, 3);
             }
+
             return result;
         } else if (
             category === 'EYE' ||
