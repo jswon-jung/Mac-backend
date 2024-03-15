@@ -6,6 +6,7 @@ import {
 } from 'typeorm';
 import { Shopping } from './shopping.entity';
 import { Order } from './order.entity';
+import { Payment } from './payment.entity';
 
 export enum PROVIDER_ENUM {
     GOOGLE = 'google',
@@ -44,6 +45,9 @@ export class User {
 
     @OneToMany(() => Order, (order) => order.user)
     order!: Order[];
+
+    @OneToMany(() => Payment, (payment) => payment.user)
+    payment!: Payment[];
 
     @Column({ default: 0 })
     point!: number;
