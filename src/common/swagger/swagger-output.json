@@ -1656,7 +1656,7 @@
                 }
             }
         },
-        "/shopping/delete": {
+        "/shopping/delete/id1,id2,id3": {
             "delete": {
                 "tags": ["Shopping"],
                 "summary": "장바구니 상품 삭제하기",
@@ -1665,25 +1665,6 @@
                         "BearerAuth": []
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "shoppingId": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "example": "adfhttwerqwrasxczx"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "응답 성공",
